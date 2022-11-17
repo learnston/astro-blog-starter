@@ -1,77 +1,18 @@
 ---
 import Header from '../components/Header.astro';
-import Body from '../components/Body.astro';
+import Head from '../components/Head.astro';
+import '../styles/reset.css';
+import '../styles/global.css';
 const { title } = Astro.props;
 ---
 
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
+	<Head title={title} />
 	<body>
 		<Header />
-		<Body />
-		<slot />
+		<div class="posts-wrapper">
+			<slot />
+		</div>
 	</body>
 </html>
-<style is:global>
-	html {
-		font-family: system-ui, sans-serif;
-		background-color: #f6f6f6;
-	}
-	code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
-	}
-
-	body {
-		margin: 0;
-		background-color: #f6f6f6;
-		font-family: sans-serif;
-	}
-
-	header li {
-		list-style-type: none;
-		display: inline;
-		cursor: pointer;
-	}
-
-	header li:hover {
-		opacity: 0.8;
-	}
-
-	header ul {
-		padding: 0;
-		margin: 0;
-	}
-
-	.header-inner {
-		max-width: 80rem;
-		margin: 0 auto;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		height: 100%;
-	}
-
-	.header {
-		height: 60px;
-		background-color: #0f172a;
-		color: #fff;
-	}
-
-	.header__left {
-		display: flex;
-		gap: 1em;
-	}
-
-	.link-container {
-		display: flex;
-		gap: 2rem;
-	}
-</style>
