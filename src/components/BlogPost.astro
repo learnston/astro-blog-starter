@@ -1,0 +1,22 @@
+---
+const { frontmatter, url } = Astro.props;
+---
+
+<!-- <div class="post">
+	<h1><a href={frontmatter.url}>{frontmatter.title}</a></h1>
+	<p>{frontmatter.description}</p>
+</div> -->
+<div class="post">
+	<h1><a href={url}>{frontmatter.title}</a></h1>
+
+	{
+		frontmatter.image ? (
+			<a href={url}>
+				<img src={frontmatter.image.url} alt={frontmatter.image.alt} />
+			</a>
+		) : null
+	}
+	<div class="post-piece">
+		{frontmatter.description}
+	</div>
+</div>

@@ -14,6 +14,7 @@ code {
 body {
 	margin: 0;
 	font-family: Source Sans Pro, sans-serif;
+	padding-bottom: 200px;
 }
 
 h1 {
@@ -115,4 +116,23 @@ header ul {
 	max-width: 60rem;
 	margin: 0 auto;
 	margin-top: 40px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+/* pagination styles */
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+	background-color: #ffffff;
+	border: 3px solid rgb(160, 173, 174);
+	border-radius: 10px;
+	padding: 2rem;
+}
+
+.current-page {
+	text-decoration: underline;
 }

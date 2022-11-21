@@ -1,0 +1,71 @@
+---
+import Layout from './Layout.astro';
+import Tag from '../components/Tag.astro';
+const { frontmatter } = Astro.props;
+const allPosts = await Astro.glob('../pages/posts/*.mdx');
+const tags = [...new Set(allPosts.map((post) => post.frontmatter.tags).flat())];
+---
+
+<Layout>
+	<div class="post">
+		<h1>{frontmatter.title}</h1>
+		<div class="post-data">
+			<span class="author data-item">Written by {frontmatter.author}</span>
+			<span class="date data-item">Published on: {frontmatter.pubDate.slice(0, 10)}</span>
+			<span class="categories data-item"
+				>{
+					frontmatter.categories.length > 1
+						? `${frontmatter.categories[0]} and more`
+						: frontmatter.categories[0]
+				}</span
+			>
+		</div>
+		{frontmatter.image ? <img src={frontmatter.image.url} alt={frontmatter.image.alt} /> : null}
+		<div class="post-piece">
+			<slot />
+		</div>
+		<div class="tags">
+			<p class="tag-label"><span class="tag-label-inner">Tags:</span></p>
+			{
+				frontmatter.tags.map((tag) => (
+					<p class="tag">
+						<a href={`/tags/${tag}`}>{tag}</a>
+					</p>
+				))
+			}
+		</div>
+	</div>
+</Layout>
+<style>
+	a {
+		color: #00539f;
+	}
+
+	.tag-label {
+		flex: 100%;
+	}
+
+	.tag-label-inner,
+	.data-item {
+		background-color: gray;
+		border-radius: 10px;
+		padding: 6px 10px;
+		color: white;
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		/* margin: 0 auto; */
+		margin-top: 4rem;
+	}
+
+	.tag {
+		margin: 0.25em;
+		border: dotted 1px #a1a1a1;
+		border-radius: 0.5em;
+		padding: 0.5em 1em;
+		font-size: 1.15em;
+		background-color: #f8fcfd;
+	}
+</style>

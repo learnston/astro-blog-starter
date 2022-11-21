@@ -1,0 +1,58 @@
+---
+let { currentPage, prevPageUrl, nextPageUrl, lastPage } = Astro.props;
+const prevPage = currentPage - 1;
+const prevIsIndex = prevPage == 1;
+const nextPage = currentPage + 1;
+if (prevIsIndex) prevPageUrl = '/';
+const secondToLast = nextPage == lastPage;
+const goToStart = null;
+const index = currentPage == 1;
+const lastPageNow = currentPage == lastPage;
+const indexJump = currentPage >= 3;
+const finalJump = nextPage != lastPage;
+const indexJumpNum = indexJump && [...Array(currentPage - 2)];
+const finalJumpNum = lastPage && finalJump && [...Array(lastPage - currentPage - 1)];
+// console.log(lastPage);
+---
+
+<div class="pagination">
+	<slot />
+	<ul>
+		{}
+		{
+			currentPage >= 2 && (
+				<li class="jump-home">
+					<a href="/">1</a>
+				</li>
+			)
+		}
+		{
+			prevPageUrl &&
+				indexJumpNum &&
+				indexJumpNum.map((el, idx) => (
+					<li class="prev-page">
+						<a href={`/page/${idx + 2}`}>{idx + 2}</a>
+					</li>
+				))
+		}
+		{index ? <a href="/page/2">Go to next page</a> : <li class="current-page">{currentPage}</li>}
+		{
+			!lastPageNow &&
+				!index &&
+				!secondToLast &&
+				finalJumpNum &&
+				finalJumpNum.map((el, idx) => (
+					<li class="next-page">
+						<a href={`/page/${currentPage + 1 + idx}`}>{currentPage + 1 + idx}</a>
+					</li>
+				))
+		}
+		{
+			!lastPageNow && !index && (
+				<li class="jump-last">
+					<a href={`/page/${lastPage}`}>{lastPage}</a>
+				</li>
+			)
+		}
+	</ul>
+</div>

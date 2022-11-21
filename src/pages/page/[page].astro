@@ -1,0 +1,43 @@
+---
+import Pagination from '../../components/Pagination.astro';
+import Layout from '../../layouts/Layout.astro';
+import BlogPost from '../../components/BlogPost.astro';
+export async function getStaticPaths({ paginate }) {
+	const allMdx = await Astro.glob('../posts/*.mdx');
+	const allMds = await Astro.glob('../posts/*.md');
+	const allPosts = [...allMdx, ...allMds];
+	allPosts.sort((a, b) => b.frontmatter.postNum - a.frontmatter.postNum);
+
+	// Generate pages from our array of astronauts, with 2 to a page
+	return paginate(allPosts, { pageSize: 2 });
+}
+// All paginated data is passed on the "page" prop
+const { page } = Astro.props;
+const title = `Pagina ${page.currentPage}`;
+---
+
+{page.currentPage == 1 && <meta http-equiv="refresh" content={`0; url='/'`} />}
+<Layout title={title}>
+	<h1>Page {page.currentPage}</h1>
+	{
+		page.data.map((post) => (
+			<BlogPost
+				frontmatter={post.frontmatter}
+				url={post.url}
+				rawContent={post.rawContent}
+				compiledContent={post.compiledContent}
+				Content={post.Content}
+			/>
+		))
+	}
+	<Pagination
+		currentPage={page.currentPage}
+		prevPageUrl={page.url.prev}
+		nextPageUrl={page.url.next}
+		lastPage={page.lastPage}
+	>
+		<!-- {page.currentPage == 2 ? <a href="/">Previous</a> : null}
+		{page.currentPage != 2 ? <a href={page.url.prev}>Previous</a> : null}
+		{page.url.next ? <a href={page.url.next}>Next</a> : null} -->
+	</Pagination>
+</Layout>

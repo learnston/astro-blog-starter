@@ -1,9 +1,36 @@
 ---
-import Post from '../components/Post.astro';
+import Pagination from '../components/Pagination.astro';
 import Layout from '../layouts/Layout.astro';
+import BlogPost from '../components/BlogPost.astro';
+const allMdx = await Astro.glob('../pages/posts/*.mdx');
+const allMds = await Astro.glob('../pages/posts/*.md');
+const allPosts = [...allMdx, ...allMds];
+allPosts.sort((a, b) => Date.parse(b.frontmatter.pubDate) - Date.parse(a.frontmatter.pubDate));
 const title = 'inicio';
+const postPerPage = 2;
 ---
 
+{console.log(allMds[0].frontmatter.pubDate)}
+{console.log(Date.parse(allMds[0].frontmatter.pubDate))}
 <Layout title={title}>
-	<Post />
+	{
+		allPosts.map(
+			(post, idx) =>
+				idx <= postPerPage && (
+					<BlogPost
+						frontmatter={post.frontmatter}
+						url={post.url}
+						rawContent={post.rawContent}
+						compiledContent={post.compiledContent}
+						Content={post.Content}
+					/>
+				)
+		)
+	}
+	{allPosts.length >= postPerPage && <Pagination currentPage={1} />}
 </Layout>
+<style>
+	* {
+		/* color: white; */
+	}
+</style>
